@@ -1,6 +1,6 @@
 from app.models.user_model import User
 from app.extensions import db
-from utils.security import hash_password, verify_password
+from app.utils.security import hash_password, verify_password
 
 # ---------------------------------------------------------
 
