@@ -12,7 +12,7 @@ def register_user(email, password):
     if User.query.filter_by(email=email).first():
         return None
 
-    user = User(email=email, pasword_hash=hash_password(password))
+    user = User(email=email, password_hash=hash_password(password))
     db.session.add(user)
     db.session.commit()
 
