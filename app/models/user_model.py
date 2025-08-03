@@ -1,12 +1,14 @@
 from app.extensions import db
 from datetime import datetime
+from sqlalchemy import Column, Integer, DateTime, String
 
-# ----------------------------------
+# ------------------------------------------------------------
+
 
 class User(db.Model):
     """User DB model"""
-    
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(20), unique=True, nullable=False)
-    password_hash = db.Column(db.String(120), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String(20), unique=True, nullable=False)
+    password_hash = Column(String(120), nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
