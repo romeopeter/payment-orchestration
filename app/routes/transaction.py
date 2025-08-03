@@ -15,37 +15,38 @@ txn_bp = Blueprint("transaction", __name__)
 @jwt_required
 def create_txn():
     """
-    Create transaction new transaction (simulation)
+    Create a new transaction (Simulation)
     ---
     tags:
-        - description
-    requestBody
-        required: true
-        content:
-            application/json:
-                schema:
-                    type: object
-                    properties:
-                        amount:
-                            type: integer
-                        gateway:
-                            type: string
-                        metadata:
-                            type: object
+      - Transactions
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                type: integer
+              gateway:
+                type: string
+              txn_metadata:
+                type: object
     responses:
-        201:
-            description: Transaction created
+      201:
+        description: Transaction created
     """
+
     data = request.json
     customer_id = get_jwt_identity()
     txn = create_transaction(
         amount=data["amount"],
         gateway=data["gateway"],
         customer_id=customer_id,
-        metadata=["metadata"],
+        txn_metadata=["txn_metadata"],
     )
     data = {
-        "reference": txn.reference,
+        "gateway_ref": txn.gateway_ref,
         "status": txn.status,
         "amount": txn.amount,
         "gateway": txn.gateway,
@@ -61,16 +62,17 @@ def list_txns():
     List transactions for the logged-in user
     ---
     tags:
-        - Transaction
+        - Transactions
     responses:
         200:
             description: List of transactions
     """
+
     customer_id = get_jwt_identity()
     txns = list_customer_transactions(customer_id)
     data = [
         {
-            "reference": t.reference,
+            "gateway_ref": t.gateway_ref,
             "amount": t.amount,
             "status": t.status,
             "gateway": t.gateway,
