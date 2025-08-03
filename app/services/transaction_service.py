@@ -9,23 +9,23 @@ def generate_reference():
     return "txn_" + uuid.uuid4().hex[:10]
 
 
-def create_transaction(amount, gateway, customer_id, metadata=None):
-    reference = generate_reference()
+def create_transaction(amount, gateway, customer_id, txn_metadata=None):
+    gateway_ref = generate_reference()
     txn = Transaction(
-        reference=reference,
+        gateway_ref=gateway_ref,
         amount=amount,
         gateway=gateway,
         status="pending",
         customer_id=customer_id,
-        metadata=metadata or {},
+        txn_metadata=txn_metadata or {},
     )
     db.session.add(txn)
     db.session.commit()
     return txn
 
 
-def get_transaction_by_reference(reference):
-    return Transaction.query.filter_by(reference=reference).first()
+def get_transaction_by_gateway_ref(gateway_ref):
+    return Transaction.query.filter_by(gateway_ref=gateway_ref).first()
 
 
 def list_customer_transactions(customer_id):
