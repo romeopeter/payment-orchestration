@@ -10,17 +10,59 @@ auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
-    """Register route"""
+    """
+    Register a new user
+    ---
+    tags:
+      - Auth
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+    responses:
+      201:
+        description: User registered
+      400:
+        description: User already exists
+    """
     data = request.json
     user, error = register_user(data["email"], data["password"])
     if error:
         return jsonify({"error": error, "status": 400})
-    return jsonify({"message": "User register", "user": user, "status": 201})
+    return jsonify({"message": "User registered", "user": user, "status": 201})
 
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    """Login route"""
+    """
+    Login and retrieve JWT token
+    ---
+    tags:
+      - Auth
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+    responses:
+      200:
+        description: JWT token returned
+      401:
+        description: Invalid credentials
+    """
     data = request.json
     user = authenticated_user(data["email"], data["password"])
     if not user:
