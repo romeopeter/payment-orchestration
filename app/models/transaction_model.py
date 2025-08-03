@@ -8,9 +8,9 @@ from datetime import datetime
 
 class Transaction(db.Model):
     id = Column(Integer, primary_key=True)
-    reference = Column(String(64), unique=True, nullable=False)  # Unique gateway ref
+    gateway_ref = Column(String(64), unique=True, nullable=False)  # Unique gateway ref
     amount = Column(Integer, nullable=False)
-    gateway_ref = Column(String(32), nullable=False)
+    gateway = Column(String(32), nullable=False)
     status = Column(
         String(10), nullable=False, unique=False, default="pending"
     )  # pending, failed, "success"
