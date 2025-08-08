@@ -33,9 +33,9 @@ def register():
         description: User already exists
     """
     data = request.json
-    user, error = register_user(data["email"], data["password"])
-    if error:
-        return jsonify({"error": error, "status": 400})
+    user = register_user(data["email"], data["password"])
+    if user is None:
+        return jsonify({"message": "User already exist", "status": 400})
     return jsonify({"message": "User registered", "user": user, "status": 201})
 
 
