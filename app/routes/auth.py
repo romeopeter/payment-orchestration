@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from app.services.auth_service import register_user, authenticated_user
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from app.utils.to_dict import to_dict
+from app.models.user_model import User
 
 # -------------------------------------------------------
 
@@ -67,7 +69,7 @@ def login():
     user = authenticated_user(data["email"], data["password"])
     if not user:
         return jsonify({"error": "Invalid credentials", "status": 401})
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
     return jsonify({"access_token": access_token, "status": 200})
 
 
@@ -75,5 +77,6 @@ def login():
 @jwt_required()
 def profile():
     """Token(user) identity route"""
-    user_id = get_jwt_identity()
-    return jsonify({"user_id", user_id})
+    user_id = int(get_jwt_identity())
+    user = User.query.get(user_id)
+    return jsonify({"user", to_dict(user)})
