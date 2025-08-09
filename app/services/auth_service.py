@@ -1,6 +1,7 @@
 from app.models.user_model import User
 from app.extensions import db
 from app.utils.security import hash_password, verify_password
+from app.utils.to_dict import to_dict
 
 # ---------------------------------------------------------
 
@@ -8,15 +9,15 @@ from app.utils.security import hash_password, verify_password
 def register_user(email, password):
     """Register user"""
 
-    # User doesn't exist
+    # User already exist
     if User.query.filter_by(email=email).first():
         return None
 
-    user = User(email=email, password_hash=hash_password(password))
-    db.session.add(user)
+    userObj = User(email=email, password_hash=hash_password(password))
+    db.session.add(userObj)
     db.session.commit()
 
-    return user
+    return to_dict(userObj)
 
 
 def authenticated_user(email, password):
