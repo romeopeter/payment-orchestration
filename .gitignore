@@ -63,6 +63,7 @@ mypy_cache/
 # Environments
 env
 venv
+.env
 
 # macOS specific files
 DS_Store
