@@ -12,7 +12,7 @@ txn_bp = Blueprint("transaction", __name__)
 
 
 @txn_bp.route("/", methods=["POST"])
-@jwt_required
+@jwt_required()
 def create_txn():
     """
     Create a new transaction (Simulation)
